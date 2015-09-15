@@ -7,14 +7,16 @@
  */
 var L = require('leaflet');
 var React = require('react');
+var ConfigUtils = require('../../utils/ConfigUtils');
 
 var LeafletMap = React.createClass({
     propTypes: {
         id: React.PropTypes.string,
-        center: React.PropTypes.object,
-        zoom: React.PropTypes.number,
+        center: ConfigUtils.PropTypes.center,
+        zoom: React.PropTypes.number.isRequired,
         projection: React.PropTypes.string,
-        onMapViewChanges: React.PropTypes.func
+        onMapViewChanges: React.PropTypes.func,
+        onClick: React.PropTypes.func
     },
     getDefaultProps() {
         return {
@@ -26,23 +28,24 @@ var LeafletMap = React.createClass({
         return { };
     },
     componentDidMount() {
-        var map = L.map(this.props.id).setView([this.props.center.lat, this.props.center.lng],
+        var map = L.map(this.props.id).setView([this.props.center.y, this.props.center.x],
           this.props.zoom);
-        map.on('moveend', () => {
-            this.props.onMapViewChanges(map.getCenter(), map.getZoom());
-        });
 
         this.map = map;
+        this.map.on('moveend', this.updateMapInfoState);
+        this.map.on('click', (event) => { this.props.onClick(event.containerPoint); });
+
+        this.updateMapInfoState();
         // NOTE: this re-call render function after div creation to have the map initialized.
         this.forceUpdate();
     },
     componentWillReceiveProps(newProps) {
         const currentCenter = this.map.getCenter();
-        const centerIsUpdate = newProps.center.lat === currentCenter.lat &&
-                               newProps.center.lng === currentCenter.lng;
+        const centerIsUpdate = newProps.center.y === currentCenter.lat &&
+                               newProps.center.x === currentCenter.lng;
 
         if (!centerIsUpdate) {
-            this.map.setView(newProps.center);
+            this.map.setView([newProps.center.y, newProps.center.x]);
         }
         if (newProps.zoom !== this.map.getZoom()) {
             this.map.setZoom(newProps.zoom);
@@ -61,6 +64,23 @@ var LeafletMap = React.createClass({
                 {children}
             </div>
         );
+    },
+    updateMapInfoState() {
+        const bbox = this.map.getBounds().toBBoxString().split(',');
+        const size = {
+            height: this.map.getSize().y,
+            width: this.map.getSize().x
+        };
+        var center = this.map.getCenter();
+        this.props.onMapViewChanges({x: center.lng, y: center.lat, crs: "EPSG:4326"}, this.map.getZoom(), {
+            bounds: {
+                minx: bbox[0],
+                miny: bbox[1],
+                maxx: bbox[2],
+                maxy: bbox[3]
+            },
+            crs: 'EPSG:4326'
+        }, size);
     }
 });
 

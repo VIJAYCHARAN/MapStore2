@@ -15,7 +15,7 @@ var assign = require('object-assign');
 function mapConfig(state = null, action) {
     switch (action.type) {
         case MAP_CONFIG_LOADED:
-            return action.legacy ? ConfigUtils.convertFromLegacy(action.config) : action.config.map;
+            return action.legacy ? ConfigUtils.convertFromLegacy(action.config) : ConfigUtils.normalizeConfig(action.config.map);
         case MAP_CONFIG_LOAD_ERROR:
             return {
                 loadingError: action.error
@@ -23,7 +23,9 @@ function mapConfig(state = null, action) {
         case CHANGE_MAP_VIEW:
             return assign({}, state, {
                 center: action.center,
-                zoom: action.zoom
+                zoom: action.zoom,
+                bbox: action.bbox,
+                size: action.size
             });
         default:
             return state;

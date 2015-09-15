@@ -4,14 +4,10 @@
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>MapStore 2 Viewer</title>
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+        <title>MapStore 2 HomePage</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
         <link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
-        <!--script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script-->
+        <link rel="shortcut icon" href="examples/home/img/favicon.ico" type="image/x-icon">
 
         <style>
         html, body, #container, #map, .fill {
@@ -20,8 +16,22 @@
             margin: 0;
             padding: 0;
         }
+
+        .fill-debug {
+            position:absolute;
+            left:0;
+            right: 300px;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
         .panel{
             background-color: rgba(255,255,255,0.3);
+        }
+
+        #langSelContainer {
+            margin: 8px;
         }
 
         @media (min-width: 992px) {
@@ -32,13 +42,12 @@
             }
             #langSelContainer {
                 right:0px;
+                margin-right: 150px;
                 position: absolute;
             }
 
         }
-        #langSelContainer {
-            margin: 8px;
-        }
+
 
         body{
             padding: 20px;
@@ -50,7 +59,7 @@
             background-image: url(examples/home/img/bg.jpg) ;
             background-position: 0 -30px;
             background-origin: padding-box;
-            background-size: 100%;
+            background-size: cover;
         }
 
         img.mapstore-logo {
@@ -68,8 +77,10 @@
         </style>
     </head>
     <body>
+        <a href="https://github.com/geosolutions-it/MapStore2"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:100; " src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
         <div id="container"></div>
         <script src="dist/mapstore-commons.js"></script>
         <script src="dist/home.js"></script>
     </body>
+
 </html>
